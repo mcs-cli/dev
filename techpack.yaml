@@ -2,7 +2,6 @@ schemaVersion: 1
 identifier: mcs-core-pack
 displayName: "Core Pack"
 description: Foundational settings, plugins, git workflows, and code navigation for Claude Code
-version: "1.0.0"
 author: Bruno Guidolim
 minMCSVersion: "2026.2.28"
 
@@ -74,11 +73,6 @@ components:
     description: Enhanced output with educational insights and structured formatting
     plugin: "explanatory-output-style@claude-plugins-official"
 
-  - id: plugin-pr-review
-    displayName: pr-review-toolkit
-    description: Specialized PR review agents
-    plugin: "pr-review-toolkit@claude-plugins-official"
-
   - id: plugin-ralph-loop
     displayName: ralph-loop
     description: Iterative refinement loop for complex multi-step tasks
@@ -99,7 +93,6 @@ components:
     displayName: Session start hook
     description: Shows git status, branch protection, and open PRs on session start
     dependencies: [jq]
-    isRequired: true
     hookEvent: SessionStart
     hook:
       source: hooks/session_start.sh
@@ -117,16 +110,13 @@ components:
   - id: settings
     displayName: Settings
     description: Plan mode, always-thinking, env vars, hooks config, plugins
-    isRequired: true
     settingsFile: config/settings.json
 
   - id: gitignore
     displayName: Global gitignore
     description: Core gitignore entries
-    isRequired: true
     gitignore:
-      - .claude/settings.local.json
-      - .claude/.mcs-project
+      - "*.local.*"
 
 # ---------------------------------------------------------------------------
 # Templates — CLAUDE.local.md sections
