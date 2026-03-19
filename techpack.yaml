@@ -1,7 +1,7 @@
 schemaVersion: 1
 identifier: mcs-core-pack
 displayName: "Core Pack"
-description: Foundational settings, plugins, git workflows, and code navigation for Claude Code
+description: Foundational settings, plugins, and git workflows for Claude Code
 author: Bruno Guidolim
 minMCSVersion: "2026.2.28"
 
@@ -46,26 +46,6 @@ components:
     description: JSON processor (used by session hooks)
     dependencies: [homebrew]
     brew: jq
-
-  - id: uv
-    description: Python package runner (for Serena MCP server)
-    dependencies: [homebrew]
-    brew: uv
-
-  # ── MCP Servers ─────────────────────────────────────────────────────────
-  - id: serena
-    displayName: Serena
-    description: Semantic code navigation, symbol editing, and project context via LSP
-    dependencies: [uv]
-    mcp:
-      command: uvx
-      args:
-        - "--from"
-        - "git+https://github.com/oraios/serena"
-        - "serena"
-        - "start-mcp-server"
-        - "--context=claude-code"
-        - "--project-from-cwd"
 
   # ── Plugins ─────────────────────────────────────────────────────────────
   - id: plugin-explanatory-output
@@ -117,17 +97,11 @@ components:
     description: Core gitignore entries
     gitignore:
       - "*.local.*"
-      - ".serena"
 
 # ---------------------------------------------------------------------------
 # Templates — CLAUDE.local.md sections
 # ---------------------------------------------------------------------------
 templates:
-  - sectionIdentifier: serena
-    contentFile: templates/serena.md
-    dependencies:
-      - serena
-
   - sectionIdentifier: git
     placeholders:
       - __BRANCH_PREFIX__

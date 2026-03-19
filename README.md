@@ -1,6 +1,6 @@
 # Core Pack
 
-A [tech pack](https://github.com/bguidolim/mcs) that provides foundational settings, plugins, git workflows, and semantic code navigation for Claude Code.
+A [tech pack](https://github.com/bguidolim/mcs) that provides foundational settings, plugins, and git workflows for Claude Code.
 
 Built for the [`mcs`](https://github.com/bguidolim/mcs) configuration engine.
 
@@ -13,19 +13,13 @@ requires:   mcs >= 2026.2.28
 
 ## What Is This?
 
-This pack sets up the baseline Claude Code experience — plan mode by default, extended thinking, structured git workflows, and a curated set of plugins. It also installs [Serena](https://github.com/oraios/serena), an LSP-powered MCP server that gives Claude symbol-level code navigation and editing.
+This pack sets up the baseline Claude Code experience — plan mode by default, extended thinking, structured git workflows, and a curated set of plugins.
 
 On session start, the pack reports git status, branch protection warnings, ahead/behind tracking, and open PRs.
 
 ---
 
 ## What's Included
-
-### MCP Servers
-
-| Server | Description |
-|--------|-------------|
-| **Serena** | LSP-powered code navigation, symbol editing, and project context via language server |
 
 ### Plugins
 
@@ -52,7 +46,6 @@ On session start, the pack reports git status, branch protection warnings, ahead
 
 | Section | Instructions |
 |---------|-------------|
-| **serena** | Prefer Serena's symbolic tools over Read/Edit for Swift files |
 | **git** | Branch naming conventions, read-only PR reviews, commit message format |
 
 ### Settings
@@ -110,7 +103,6 @@ mcs-core-pack/
 ├── commands/
 │   └── commit.md                  # /commit slash command
 └── templates/
-    ├── serena.md                  # "Use Serena for Swift"
     └── git.md                     # Branch naming + commit conventions
 ```
 
