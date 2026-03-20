@@ -68,6 +68,11 @@ components:
     description: Context usage, active tools, running agents, and todo progress
     plugin: claude-hud@jarrodwatts/claude-hud
 
+  - id: plugin-pr-review-toolkit
+    displayName: pr-review-toolkit
+    description: Specialized review agents for comprehensive PR analysis
+    plugin: "pr-review-toolkit@claude-plugins-official"
+
   # ── Hooks ───────────────────────────────────────────────────────────────
   - id: hook-session-start
     displayName: Session start hook
@@ -85,6 +90,22 @@ components:
     command:
       source: commands/commit.md
       destination: commit.md
+
+  - id: command-pr
+    displayName: /pr command
+    description: Automates stage, commit, push, and PR creation with ticket extraction
+    dependencies: [gh]
+    command:
+      source: commands/pr.md
+      destination: pr.md
+
+  - id: command-review-pr
+    displayName: /review-pr command
+    description: Comprehensive PR review with context-aware specialized agents
+    dependencies: [gh, plugin-pr-review-toolkit]
+    command:
+      source: commands/review-pr.md
+      destination: review-pr.md
 
   # ── Configuration ───────────────────────────────────────────────────────
   - id: settings

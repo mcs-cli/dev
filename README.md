@@ -29,6 +29,7 @@ On session start, the pack reports git status, branch protection warnings, ahead
 | **ralph-loop** | Iterative refinement loop for complex multi-step tasks |
 | **claude-md-management** | Audit and improve `CLAUDE.md` files across repositories |
 | **claude-hud** | On-screen display showing context usage, active tools, and agent status |
+| **pr-review-toolkit** | Specialized review agents for comprehensive PR analysis |
 
 ### Session Hooks
 
@@ -41,6 +42,8 @@ On session start, the pack reports git status, branch protection warnings, ahead
 | Command | Description |
 |---------|-------------|
 | `/commit` | Stage, commit, push — analyzes the actual diff, writes structured commit messages |
+| `/pr` | Full pipeline: commit > push > create PR via `gh` with ticket extraction |
+| `/review-pr` | Context-aware PR review using specialized agents (code quality, tests, errors, simplification) |
 
 ### Templates (CLAUDE.local.md)
 
@@ -101,7 +104,9 @@ mcs-core-pack/
 ├── hooks/
 │   └── session_start.sh           # Git status + branch protection
 ├── commands/
-│   └── commit.md                  # /commit slash command
+│   ├── commit.md                  # /commit slash command
+│   ├── pr.md                      # /pr slash command
+│   └── review-pr.md               # /review-pr slash command
 └── templates/
     └── git.md                     # Branch naming + commit conventions
 ```
