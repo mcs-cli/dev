@@ -12,7 +12,7 @@ Arguments: $ARGUMENTS (optional — additional instructions for this PR, e.g. `t
 - Run `git log origin/HEAD..HEAD --oneline` to see existing commits on this branch (if `origin/HEAD` is not set, fall back to `git log --oneline`).
 - Extract the **ticket number** from the branch name (pattern: `__BRANCH_PREFIX__/{ticket}-*` or `{ticket}-*`) or from commit messages. If not found, ask the user.
 
-### 2. Search Project Knowledge
+### 2. Search Project Knowledge (depends on Step 1 output)
 
 **Do this AFTER analyzing changes** — use keywords from the branch name, changed files, and commit messages to search. Look for:
 - PR conventions or templates

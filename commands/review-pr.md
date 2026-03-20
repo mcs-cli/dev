@@ -29,13 +29,13 @@ Ensure the local workspace has the PR changes:
    - If not → `git fetch origin <pr-branch> && git checkout <pr-branch>`
 4. For pre-PR review (no PR exists) → stay on current branch.
 
-### 3. Read the Diff
+### 3. Read the Diff (BLOCKING — must complete before Step 4)
 
-Identify changed files: `git diff --name-only <base>...<head>`
+Identify changed files and read the full diff: `git diff <base>...<head>`
 
-### 4. Search Project Knowledge
+### 4. Search Project Knowledge (depends on Step 3 output)
 
-**Do this AFTER reading the diff** — use keywords from the PR title, description, **and the changed file/module names** to search. Look for:
+Use keywords extracted from the diff content, changed file names, and module names from Step 3. Look for:
 - PR conventions or review standards
 - Architectural decisions related to the changed modules
 - Past review findings or known issues in the affected areas
