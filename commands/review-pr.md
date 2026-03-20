@@ -29,16 +29,23 @@ Ensure the local workspace has the PR changes:
    - If not → `git fetch origin <pr-branch> && git checkout <pr-branch>`
 4. For pre-PR review (no PR exists) → stay on current branch.
 
-### 3. Determine Review Scope
+### 3. Read the Diff
 
-1. Identify changed files: `git diff --name-only <base>...<head>`
-2. Search project memories, previous decisions, and learnings using keywords from the PR title, description, and changed file/module names. Look for:
-   - PR conventions or review standards
-   - Architectural decisions related to the changed modules
-   - Past review findings or known issues in the affected areas
-   - Coding standards specific to the file types being changed
-   Use whatever knowledge and memory tools are available in this project. Include relevant findings in each agent's context preamble.
-3. Parse `$ARGUMENTS` for review aspect filters:
+Identify changed files: `git diff --name-only <base>...<head>`
+
+### 4. Search Project Knowledge
+
+**Do this AFTER reading the diff** — use keywords from the PR title, description, **and the changed file/module names** to search. Look for:
+- PR conventions or review standards
+- Architectural decisions related to the changed modules
+- Past review findings or known issues in the affected areas
+- Coding standards specific to the file types being changed
+
+Use whatever knowledge and memory tools are available in this project. Include relevant findings in each agent's context preamble.
+
+### 5. Determine Review Scope
+
+1. Parse `$ARGUMENTS` for review aspect filters:
    - `code` — general code review
    - `simplify` — code simplification
    - `tests` — test coverage analysis
@@ -46,16 +53,16 @@ Ensure the local workspace has the PR changes:
    - `comments` — comment accuracy
    - `types` — type design analysis
    - `all` — all applicable reviews (default)
-4. **Default behavior** (no aspect filter or `all`):
+2. **Default behavior** (no aspect filter or `all`):
    - **Always run:** `pr-review-toolkit:code-reviewer`
    - **Run if test files changed or new functionality added:** `pr-review-toolkit:pr-test-analyzer`
    - **Run if error handling / catch blocks / Result types in diff:** `pr-review-toolkit:silent-failure-hunter`
    - **Run if comments/documentation substantially changed:** `pr-review-toolkit:comment-analyzer`
    - **Run if new types/structs/classes/enums/protocols added:** `pr-review-toolkit:type-design-analyzer`
    - **Run after code-reviewer completes (polish pass):** `pr-review-toolkit:code-simplifier`
-5. If specific aspects are provided in arguments, run **only** those agents.
+3. If specific aspects are provided in arguments, run **only** those agents.
 
-### 4. Launch Review Agents
+### 6. Launch Review Agents
 
 Run **all selected agents in parallel** by default (launch simultaneously). If `--sequential` appears in `$ARGUMENTS`, run agents one at a time instead.
 
@@ -70,7 +77,7 @@ For EACH agent, include this context preamble in the task prompt:
 >
 > Focus on the diff between {base} and {head}. This is a read-only review — do NOT make code changes or post GitHub comments.
 
-### 5. Aggregate Results
+### 7. Aggregate Results
 
 After all agents complete, produce a unified summary:
 
