@@ -33,4 +33,4 @@ Arguments: $ARGUMENTS (optional — additional instructions for this PR, e.g. `t
 
 6. **Report** the PR URL.
 
-7. **Evaluate** whether this session produced extractable learnings or decisions worth saving to project memories.
+7. **Evaluate** whether this session produced extractable learnings, architectural decisions, or conventions worth preserving. Use whatever knowledge and memory tools are available in this project to save them.
