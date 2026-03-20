@@ -6,12 +6,16 @@ Arguments: $ARGUMENTS (optional — additional instructions for this PR, e.g. `t
 
 ## Steps
 
-1. **Check project memories, previous decisions, and learnings** for any relevant PR conventions or context related to the current branch/feature.
-
-2. **Analyze changes**:
+1. **Analyze changes**:
    - Run `git status` (never use `-uall`) and `git diff` (staged + unstaged) in parallel.
    - Run `git log origin/HEAD..HEAD --oneline` to see existing commits on this branch (if `origin/HEAD` is not set, fall back to `git log --oneline`).
    - Extract the **ticket number** from the branch name (pattern: `__BRANCH_PREFIX__/{ticket}-*` or `{ticket}-*`) or from commit messages. If not found, ask the user.
+
+2. **Search project memories, previous decisions, and learnings** using keywords from the branch name, changed files, and commit messages. Look for:
+   - PR conventions or templates
+   - Architectural decisions related to the changed modules
+   - Context or past issues in the affected areas
+   Use whatever knowledge and memory tools are available in this project. Include relevant findings in the PR description.
 
 3. **Stage and commit**:
    - Stage relevant files (prefer specific files over `git add -A`; never stage `.env` or credentials).
