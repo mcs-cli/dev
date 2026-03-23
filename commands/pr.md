@@ -35,7 +35,7 @@ Push the current branch with `-u` flag if needed.
 ### 5. Create the PR
 
 - If `.github/pull_request_template.md` exists, read it first and follow its format.
-- **Title**: `[TICKET_NUMBER] Brief description` — must be under 72 characters.
+- **Title**: `TICKET_NUMBER: Brief description` — must be under 72 characters.
 - **Body**: Fill in Context/Acceptance Criteria from the commit history and branch purpose. Fill in Testing Steps. Do NOT include unrelated PR references or auto-linked issue numbers.
 - Use `gh pr create` with HEREDOC for the body.
 
