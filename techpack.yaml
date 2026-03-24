@@ -1,5 +1,5 @@
 schemaVersion: 1
-identifier: mcs-core-pack
+identifier: dev
 displayName: "Core Pack"
 description: Foundational settings, plugins, and git workflows for Claude Code
 author: Bruno Guidolim

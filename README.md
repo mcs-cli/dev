@@ -1,8 +1,8 @@
 # Core Pack
 
-A [tech pack](https://github.com/bguidolim/mcs) that provides foundational settings, plugins, and git workflows for Claude Code.
+A [tech pack](https://github.com/mcs-cli/mcs) that provides foundational settings, plugins, and git workflows for Claude Code.
 
-Built for the [`mcs`](https://github.com/bguidolim/mcs) configuration engine.
+Built for the [`mcs`](https://github.com/mcs-cli/mcs) configuration engine.
 
 ```
 identifier: mcs-core-pack
@@ -73,10 +73,10 @@ On session start, the pack reports git status, branch protection warnings, ahead
 
 ```bash
 # 1. Install mcs
-brew install bguidolim/tap/my-claude-setup
+brew install mcs-cli/tap/mcs
 
 # 2. Register this tech pack
-mcs pack add bguidolim/mcs-core-pack
+mcs pack add mcs-cli/dev
 
 # 3. Sync your project
 cd ~/Developer/my-project
@@ -117,16 +117,16 @@ mcs-core-pack/
 
 | Pack | Description |
 |------|-------------|
-| [mcs-continuous-learning](https://github.com/bguidolim/mcs-continuous-learning) | Persistent memory and knowledge management — gives Claude long-term recall across sessions |
-| [mcs-ios-pack](https://github.com/bguidolim/mcs-ios-pack) | Xcode integration, simulator management, and Apple documentation |
+| [mcs-continuous-learning](https://github.com/mcs-cli/mcs-continuous-learning) | Persistent memory and knowledge management — gives Claude long-term recall across sessions |
+| [mcs-ios-pack](https://github.com/mcs-cli/mcs-ios-pack) | Xcode integration, simulator management, and Apple documentation |
 
 ---
 
 ## Links
 
-- [MCS (My Claude Setup)](https://github.com/bguidolim/mcs) — the configuration engine
-- [Creating Tech Packs](https://github.com/bguidolim/mcs/blob/main/docs/creating-tech-packs.md) — guide for building your own
-- [Tech Pack Schema](https://github.com/bguidolim/mcs/blob/main/docs/techpack-schema.md) — full YAML reference
+- [MCS (My Claude Setup)](https://github.com/mcs-cli/mcs) — the configuration engine
+- [Creating Tech Packs](https://github.com/mcs-cli/mcs/blob/main/docs/creating-tech-packs.md) — guide for building your own
+- [Tech Pack Schema](https://github.com/mcs-cli/mcs/blob/main/docs/techpack-schema.md) — full YAML reference
 
 ---
 
