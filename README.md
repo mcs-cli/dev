@@ -5,7 +5,7 @@ A [tech pack](https://github.com/mcs-cli/mcs) that provides foundational setting
 Built for the [`mcs`](https://github.com/mcs-cli/mcs) configuration engine.
 
 ```
-identifier: mcs-core-pack
+identifier: dev
 requires:   mcs >= 2026.2.28
 ```
 
@@ -97,7 +97,7 @@ During `mcs sync`, you'll be prompted for:
 ## Directory Structure
 
 ```
-mcs-core-pack/
+dev/
 ├── techpack.yaml                  # Manifest — defines all components
 ├── config/
 │   └── settings.json              # Claude Code settings (plan mode, env vars)
@@ -117,8 +117,8 @@ mcs-core-pack/
 
 | Pack | Description |
 |------|-------------|
-| [mcs-continuous-learning](https://github.com/mcs-cli/mcs-continuous-learning) | Persistent memory and knowledge management — gives Claude long-term recall across sessions |
-| [mcs-ios-pack](https://github.com/mcs-cli/mcs-ios-pack) | Xcode integration, simulator management, and Apple documentation |
+| [memory](https://github.com/mcs-cli/memory) | Persistent memory and knowledge management — gives Claude long-term recall across sessions |
+| [ios](https://github.com/mcs-cli/ios) | Xcode integration, simulator management, and Apple documentation |
 
 ---
 
