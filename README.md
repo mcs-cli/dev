@@ -1,4 +1,4 @@
-# Core Pack
+# Dev Essentials
 
 A [tech pack](https://github.com/mcs-cli/mcs) that provides foundational settings, plugins, and git workflows for Claude Code.
 
@@ -59,6 +59,9 @@ On session start, the pack reports git status, branch protection warnings, ahead
 | `alwaysThinkingEnabled` | `true` | Extended thinking on every response |
 | `ANTHROPIC_DEFAULT_HAIKU_MODEL` | `claude-sonnet-4-6` | Upgrades lightweight model tasks to Sonnet |
 | `ENABLE_TOOL_SEARCH` | `1` | Enables deferred tool search for MCP servers |
+| `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` | `1` | Disables non-essential telemetry traffic |
+| `attribution.commit` | `""` | Suppresses Claude Code attribution in commit messages |
+| `attribution.pr` | `""` | Suppresses Claude Code attribution in PR descriptions |
 
 ---
 

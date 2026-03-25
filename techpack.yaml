@@ -1,6 +1,6 @@
 schemaVersion: 1
 identifier: dev
-displayName: "Core Pack"
+displayName: "Dev Essentials"
 description: Foundational settings, plugins, and git workflows for Claude Code
 author: Bruno Guidolim
 minMCSVersion: "2026.2.28"
