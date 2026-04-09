@@ -45,6 +45,13 @@ main() {
         fi
     fi
 
+    # === REPO NAME ===
+    if command -v gh >/dev/null 2>&1; then
+        if repo_name=$(gh repo view --json nameWithOwner -q '.nameWithOwner' 2>/dev/null); then
+            [[ -n "$repo_name" ]] && context+="\nRepo: $repo_name"
+        fi
+    fi
+
     # === GIT REMOTE TRACKING ===
     if [[ -n "${branch:-}" ]] && git rev-parse --abbrev-ref '@{upstream}' >/dev/null 2>&1; then
         if counts=$(git rev-list --count --left-right '@{upstream}...HEAD' 2>/dev/null); then
