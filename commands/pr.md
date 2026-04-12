@@ -9,7 +9,7 @@ Arguments: $ARGUMENTS (optional — additional instructions for this PR, e.g. `t
 ### 1. Analyze Changes
 
 - Run `git status` (never use `-uall`) and `git diff` (staged + unstaged) in parallel.
-- Run `git log origin/HEAD..HEAD --oneline` to see existing commits on this branch (if `origin/HEAD` is not set, fall back to `git log --oneline`).
+- Run `git log origin/HEAD..HEAD --oneline` to see existing commits on this branch. If `origin/HEAD` is not set, use `git log origin/main..HEAD --oneline` (or the default branch name if different).
 - Extract the **ticket number** from the branch name (pattern: `__BRANCH_PREFIX__/{ticket}-*` or `{ticket}-*`) or from commit messages. If not found, ask the user.
 
 ### 2. Search Project Knowledge (depends on Step 1 output)
@@ -28,16 +28,28 @@ Use whatever knowledge and memory tools are available in this project. Include r
 - Commit message format: one-line summary + max 3 bullet points describing actual changes. Use HEREDOC for the message.
 - If there are no changes to commit, skip to step 4.
 
-### 4. Push
+### 4. Push and Determine Base Branch
 
-Push the current branch with `-u` flag if needed.
+Run these two tasks in parallel:
+
+**Push**: Push the current branch with `-u` flag if needed.
+
+**Determine base branch**:
+1. Run `gh repo view --json defaultBranchRef --jq '.defaultBranchRef.name'` to get the repo's default branch.
+2. Get the current branch name with `git branch --show-current`.
+3. List candidate remote branches: `git branch -r --sort=-committerdate` — exclude `origin/<current_branch>` and any `HEAD` pointer from the candidates.
+4. For each candidate, find the merge-base with HEAD: `git merge-base HEAD <candidate>`. The candidate whose merge-base is the **most recent commit** (i.e., `git rev-list --count <merge-base>..HEAD` returns the smallest number) is the likely parent. Strip the `origin/` prefix to get the base branch name.
+5. If detection fails or no candidates are found, fall back to the default branch.
+6. If the detected base branch is **not** the default branch, ask the user to confirm using `AskUserQuestion` with options: the detected branch (recommended), the default branch, or Other.
+7. If the detected base branch **is** the default branch, use it without asking.
+8. Always pass `--base <confirmed_base_branch>` to `gh pr create` in step 5.
 
 ### 5. Create the PR
 
 - If `.github/pull_request_template.md` exists, read it first and follow its format.
 - **Title**: `TICKET_NUMBER: Brief description` — must be under 72 characters.
 - **Body**: Fill in Context/Acceptance Criteria from the commit history and branch purpose. Fill in Testing Steps. Do NOT include unrelated PR references or auto-linked issue numbers.
-- Use `gh pr create` with HEREDOC for the body.
+- Use `gh pr create --base <confirmed_base_branch>` with HEREDOC for the body.
 
 ### 6. Report
 
