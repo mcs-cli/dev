@@ -46,9 +46,10 @@ Run these two tasks in parallel:
 
 ### 5. Create the PR
 
-- If `.github/pull_request_template.md` exists, read it first and follow its format.
+- **Check for a PR template** in `.github/`, the repo root, or `docs/` (case-insensitive `PULL_REQUEST_TEMPLATE.md`). If `.github/PULL_REQUEST_TEMPLATE/` has multiple templates, ask the user which to use.
+- **If a template exists, follow it exactly** — use its sections and fill them in from the diff and commit history. Otherwise, write Context, Acceptance Criteria, and Testing Steps.
 - **Title**: `TICKET_NUMBER: Brief description` — must be under 72 characters.
-- **Body**: Fill in Context/Acceptance Criteria from the commit history and branch purpose. Fill in Testing Steps. Do NOT include unrelated PR references or auto-linked issue numbers.
+- Do NOT include unrelated PR references or auto-linked issue numbers.
 - Use `gh pr create --base <confirmed_base_branch>` with HEREDOC for the body.
 
 ### 6. Report
