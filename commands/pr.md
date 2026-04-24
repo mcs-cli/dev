@@ -46,11 +46,31 @@ Run these two tasks in parallel:
 
 ### 5. Create the PR
 
-- **Check for a PR template** in `.github/`, the repo root, or `docs/` (case-insensitive `PULL_REQUEST_TEMPLATE.md`). If `.github/PULL_REQUEST_TEMPLATE/` has multiple templates, ask the user which to use.
-- **If a template exists, follow it exactly** — use its sections and fill them in from the diff and commit history. Otherwise, write Context, Acceptance Criteria, and Testing Steps. **Keep the description short and easy to skim**: the diff already shows *what* changed, so focus on *why* and anything non-obvious. Skip file-by-file narration, skip restating the code in prose, and prefer short bullets over paragraphs. When a section has nothing meaningful to add, write a brief note rather than padding with filler.
-- **Title**: `TICKET_NUMBER: Brief description` — must be under 72 characters.
-- Do NOT include unrelated PR references or auto-linked issue numbers.
-- Use `gh pr create --base <confirmed_base_branch>` with HEREDOC for the body.
+Write for a reviewer who has no context on this branch, issue, or conversation. They should be able to decide **what to focus on** from the body alone. Length should match the complexity of the change, not the size of the diff.
+
+**Title**: `TICKET_NUMBER: Brief description` — under 72 characters. No unrelated PR references or auto-linked issue numbers.
+
+**Body — hard rules:**
+
+- Lead with **why**: the user-visible symptom or goal, and the area of the code affected. Never restate the title.
+- Describe **behavior**, not implementation. Do not name files, classes, methods, variables, or line numbers in the body — the diff already shows those. A reviewer should be able to read the PR without knowing the symbol names.
+- Bullets are one-line behavior descriptions, not paragraphs. If a bullet needs prose, it's probably duplicating the diff.
+- **Do not** report local run results, test counts ("1057 tests pass"), lint/format/typecheck output, coverage numbers, or anything CI already verifies. Reviewers trust CI for that.
+- **Do not** add checkmarks (✓, ✅) or GitHub task-list checkboxes (`- [ ]` / `- [x]`) on your own. Use plain bullets — the Test plan is for actions, not a scorecard. Exception: if the template itself provides task-list checkboxes, keep them (see Template handling).
+- **Test plan** = steps a reviewer would run to verify the PR works, phrased as imperatives with the expected result (e.g. "Run `mcs sync` with a drifted lockfile → expect the migration-hint warning").
+  - Use a **numbered list** when the verification requires steps in a specific order (setup → action → assertion, or multi-step reproductions). Use plain bullets when the verifications are independent.
+  - If there is nothing manual to verify, say so in one line.
+- **Do not** invent sections ("Design notes", "Implementation notes", "Out of scope", etc.). Rationale belongs in the why; implementation detail belongs in code comments or the diff itself.
+- **Do not** duplicate between Summary and Changes. If a bullet restates the summary, delete one.
+- If a section has nothing meaningful, write one short line. Under a template, never drop the heading; without a template, omitting is fine.
+
+**Template handling:**
+
+- Check `.github/`, the repo root, and `docs/` for `PULL_REQUEST_TEMPLATE.md` (case-insensitive). If `.github/PULL_REQUEST_TEMPLATE/` has multiple templates, ask the user which to use.
+- **If a template exists, use its section headings and order.** Every heading stays and every heading is populated (write "N/A" or a one-line reason if truly empty). The template dictates *structure*, not *length* — fill each section under the hard rules above. If the template provides task-list checkboxes (`- [ ]`), keep them; they're part of the structure the author intended.
+- **If no template**, use: `## Why` · `## Changes` · `## Test plan`.
+
+Create with `gh pr create --base <confirmed_base_branch>` using HEREDOC for the body.
 
 ### 6. Report
 
