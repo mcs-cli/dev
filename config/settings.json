@@ -1,12 +1,12 @@
 {
   "env": {
-    "ENABLE_TOOL_SEARCH": "1",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-sonnet-4-6"
+    "ENABLE_TOOL_SEARCH": "1"
   },
   "permissions": {
     "defaultMode": "plan"
   },
   "alwaysThinkingEnabled": true,
+  "useAutoModeDuringPlan": true,
   "attribution": {
     "commit": "",
     "pr": ""

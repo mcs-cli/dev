@@ -48,11 +48,6 @@ components:
     brew: jq
 
   # ── Plugins ─────────────────────────────────────────────────────────────
-  - id: plugin-explanatory-output
-    displayName: explanatory-output-style
-    description: Enhanced output with educational insights and structured formatting
-    plugin: "explanatory-output-style@claude-plugins-official"
-
   - id: plugin-ralph-loop
     displayName: ralph-loop
     description: Iterative refinement loop for complex multi-step tasks
@@ -136,9 +131,3 @@ supplementaryDoctorChecks:
     name: SessionStart hook
     section: Hooks
     event: SessionStart
-
-  - type: settingsKeyEquals
-    name: Plan mode enabled
-    section: Settings
-    keyPath: permissions.defaultMode
-    expectedValue: plan
