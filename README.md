@@ -25,7 +25,6 @@ On session start, the pack reports git status, branch protection warnings, ahead
 
 | Plugin | Description |
 |--------|-------------|
-| **explanatory-output-style** | Structured, educational response formatting with insight callouts |
 | **ralph-loop** | Iterative refinement loop for complex multi-step tasks |
 | **claude-md-management** | Audit and improve `CLAUDE.md` files across repositories |
 | **claude-hud** | On-screen display showing context usage, active tools, and agent status |
