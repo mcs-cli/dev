@@ -1,6 +1,5 @@
 ---
 description: Commit and Push
-model: haiku
 ---
 
 # Commit and Push

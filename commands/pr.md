@@ -1,6 +1,5 @@
 ---
 description: Create Pull Request
-model: sonnet
 ---
 
 # Create Pull Request
