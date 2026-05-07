@@ -1,81 +1,66 @@
+---
+description: Create Pull Request
+model: sonnet
+---
+
 # Create Pull Request
 
-Automate the full commit-push-PR pipeline. This is a **git-only workflow** — never build or test.
+Git-only workflow: stage, commit, push, open PR. Never build or test.
 
-Arguments: $ARGUMENTS (optional — additional instructions for this PR, e.g. `target develop` or `skip commit`)
+Arguments: $ARGUMENTS (optional, e.g. `target develop`, `skip commit`).
 
-## Steps
+## 1. Analyze
 
-### 1. Analyze Changes
+Run in parallel: `git status` (no `-uall`), `git diff` (staged + unstaged), `git log origin/HEAD..HEAD --oneline` (fall back to `origin/main` if needed).
 
-- Run `git status` (never use `-uall`) and `git diff` (staged + unstaged) in parallel.
-- Run `git log origin/HEAD..HEAD --oneline` to see existing commits on this branch. If `origin/HEAD` is not set, use `git log origin/main..HEAD --oneline` (or the default branch name if different).
-- Extract the **ticket number** from the branch name (pattern: `__BRANCH_PREFIX__/{ticket}-*` or `{ticket}-*`) or from commit messages. If not found, ask the user.
+Extract the **ticket** from the branch (`__BRANCH_PREFIX__/{ticket}-*` or `{ticket}-*`) or commits. Ask if missing.
 
-### 2. Search Project Knowledge (depends on Step 1 output)
+## 2. Search project knowledge
 
-**Do this AFTER analyzing changes** — use keywords from the branch name, changed files, and commit messages to search. Look for:
-- PR conventions or templates
-- Architectural decisions related to the changed modules
-- Context or past issues in the affected areas
+After analyzing, search available memory/knowledge tools using keywords from the branch and diff. Look for anything that should shape the PR: PR conventions and templates, CI quirks or required checks, review checklists, prior decisions in the touched modules, known gotchas, related past PRs/issues. Fold relevant findings into the body.
 
-Use whatever knowledge and memory tools are available in this project. Include relevant findings in the PR description.
+## 3. Commit
 
-### 3. Stage and Commit
+- Stage specific files (never `-A`, never `.env` or credentials).
+- Re-check `git diff --staged` before writing the message — describe **only** what's actually staged.
+- Use the conversation for the *why*, not the *what*.
+- Message: one-line summary + up to 3 bullets. HEREDOC.
+- Nothing staged → skip.
 
-- Stage relevant files (prefer specific files over `git add -A`; never stage `.env` or credentials).
-- Describe **what** changed based on the **actual code diff** — the conversation may contain reverted attempts, bugs, or dead ends that don't reflect the final result. Use the conversation for **context and rationale** (the *why*), but never describe changes that aren't in the diff.
-- Commit message format: one-line summary + max 3 bullet points describing actual changes. Use HEREDOC for the message.
-- If there are no changes to commit, skip to step 4.
+## 4. Push and pick base branch
 
-### 4. Push and Determine Base Branch
+In parallel:
 
-Run these two tasks in parallel:
+**Push** with `-u` if needed.
 
-**Push**: Push the current branch with `-u` flag if needed.
+**Detect base**: default branch from `gh repo view --json defaultBranchRef --jq '.defaultBranchRef.name'`. For each remote branch (`git branch -r --sort=-committerdate`, excluding the current branch and `HEAD`), compute distance from HEAD to the merge-base via `git rev-list --count <merge-base>..HEAD`. Smallest distance wins; strip `origin/`. Fall back to default on failure.
 
-**Determine base branch**:
-1. Run `gh repo view --json defaultBranchRef --jq '.defaultBranchRef.name'` to get the repo's default branch.
-2. Get the current branch name with `git branch --show-current`.
-3. List candidate remote branches: `git branch -r --sort=-committerdate` — exclude `origin/<current_branch>` and any `HEAD` pointer from the candidates.
-4. For each candidate, find the merge-base with HEAD: `git merge-base HEAD <candidate>`. The candidate whose merge-base is the **most recent commit** (i.e., `git rev-list --count <merge-base>..HEAD` returns the smallest number) is the likely parent. Strip the `origin/` prefix to get the base branch name.
-5. If detection fails or no candidates are found, fall back to the default branch.
-6. If the detected base branch is **not** the default branch, ask the user to confirm using `AskUserQuestion` with options: the detected branch (recommended), the default branch, or Other.
-7. If the detected base branch **is** the default branch, use it without asking.
-8. Always pass `--base <confirmed_base_branch>` to `gh pr create` in step 5.
+If the detected base **is not** the default, confirm with `AskUserQuestion`. Otherwise use it. Pass `--base <branch>` to `gh pr create`.
 
-### 5. Create the PR
+## 5. Create the PR
 
-Write for a reviewer who has no context on this branch, issue, or conversation. They should be able to decide **what to focus on** from the body alone. Length should match the complexity of the change, not the size of the diff.
+**Title**: `TICKET: brief description`, under 72 chars.
 
-**Title**: `TICKET_NUMBER: Brief description` — under 72 characters. No unrelated PR references or auto-linked issue numbers.
+**Body**: be concise. Write for a reviewer with zero context. Match length to the complexity of the change, not the size of the diff. A few sentences is usually right.
 
-**Body — hard rules:**
+Judgment rules a "be concise" instruction can't infer:
 
-- Lead with **why**: the user-visible symptom or goal, and the area of the code affected. Never restate the title.
-- Describe **behavior**, not implementation. Do not name files, classes, methods, variables, or line numbers in the body — the diff already shows those. A reviewer should be able to read the PR without knowing the symbol names.
-- Bullets are one-line behavior descriptions, not paragraphs. If a bullet needs prose, it's probably duplicating the diff.
-- **Do not** report local run results, test counts ("1057 tests pass"), lint/format/typecheck output, coverage numbers, or anything CI already verifies. Reviewers trust CI for that.
-- **Do not** add checkmarks (✓, ✅) or GitHub task-list checkboxes (`- [ ]` / `- [x]`) on your own. Use plain bullets — the Test plan is for actions, not a scorecard. Exception: if the template itself provides task-list checkboxes, keep them (see Template handling).
-- **Test plan** = steps a reviewer would run to verify the PR works, phrased as imperatives with the expected result (e.g. "Run `mcs sync` with a drifted lockfile → expect the migration-hint warning").
-  - Use a **numbered list** when the verification requires steps in a specific order (setup → action → assertion, or multi-step reproductions). Use plain bullets when the verifications are independent.
-  - If there is nothing manual to verify, say so in one line.
-- **Do not** invent sections ("Design notes", "Implementation notes", "Out of scope", etc.). Rationale belongs in the why; implementation detail belongs in code comments or the diff itself.
-- **Do not** duplicate between Summary and Changes. If a bullet restates the summary, delete one.
-- If a section has nothing meaningful, write one short line. Under a template, never drop the heading; without a template, omitting is fine.
+- Lead with **why** — symptom or goal. Don't restate the title.
+- Describe **behavior**, not implementation. No file/class/method/line names in the body — the diff shows those.
+- Don't report CI-verifiable output (test counts, lint, typecheck, coverage).
+- Don't add checkmarks or task-list checkboxes unless the template provides them.
+- Don't invent sections ("Design notes", "Out of scope", etc.).
+- Don't duplicate between Summary and Changes.
+- **Test plan**: imperatives + expected result, e.g. "Run `mcs sync` with a drifted lockfile → expect the migration-hint warning". Numbered if order matters; bullets otherwise. If nothing to verify manually, say so in one line.
 
-**Template handling:**
+**Template**: check `.github/`, repo root, `docs/` for `PULL_REQUEST_TEMPLATE.md` (case-insensitive). If `.github/PULL_REQUEST_TEMPLATE/` has multiples, ask which. Use the template's headings and order; empty sections get `N/A` on one line — do not pad. Keep template-provided checkboxes. No template → use `## Why` · `## Changes` · `## Test plan`.
 
-- Check `.github/`, the repo root, and `docs/` for `PULL_REQUEST_TEMPLATE.md` (case-insensitive). If `.github/PULL_REQUEST_TEMPLATE/` has multiple templates, ask the user which to use.
-- **If a template exists, use its section headings and order.** Every heading stays and every heading is populated (write "N/A" or a one-line reason if truly empty). The template dictates *structure*, not *length* — fill each section under the hard rules above. If the template provides task-list checkboxes (`- [ ]`), keep them; they're part of the structure the author intended.
-- **If no template**, use: `## Why` · `## Changes` · `## Test plan`.
+Create with `gh pr create --base <branch>`, body via HEREDOC.
 
-Create with `gh pr create --base <confirmed_base_branch>` using HEREDOC for the body.
+## 6. Report
 
-### 6. Report
+Print the PR URL.
 
-Report the PR URL.
+## 7. Evaluate learnings
 
-### 7. Evaluate Learnings
-
-Evaluate whether this session produced extractable learnings, architectural decisions, or conventions worth preserving. Use whatever knowledge and memory tools are available in this project to save them.
+If the session produced reusable knowledge, route it through the available memory/knowledge tools.
