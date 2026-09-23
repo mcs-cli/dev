@@ -6,11 +6,11 @@ description: Create Pull Request
 
 Git-only workflow: stage, commit, push, open PR. Never build or test.
 
-Arguments: $ARGUMENTS (optional) — `target <branch>` / `base <branch>` / `--base <branch>` / a bare branch name to override the base; `skip commit`; `no-confirm` to create without the review step.
+Arguments: $ARGUMENTS (optional) — `target <branch>` / `base <branch>` / `--base <branch>` / a bare branch name to override the base; `skip commit`.
 
 ## 1. Analyze
 
-**Base branch.** If `$ARGUMENTS` names one — `target <x>`, `base <x>`, `--base <x>`, or a bare token that isn't a reserved word (`skip`, `commit`, `no-confirm`) — use it. Otherwise use the repository default:
+**Base branch.** If `$ARGUMENTS` names one — `target <x>`, `base <x>`, `--base <x>`, or a bare token that isn't a reserved word (`skip`, `commit`) — use it. Otherwise use the repository default:
 
 ```
 gh repo view --json defaultBranchRef --jq '.defaultBranchRef.name'
@@ -68,7 +68,7 @@ No template → `## Why` + `## Test plan`, and nothing else unless the change ca
 
 ## 6. Review and create
 
-Print the title and the full body, then ask with `AskUserQuestion`: **Create** / **Revise** / **Cancel**. On *Revise*, apply the feedback and show it again. Skip this step only when `$ARGUMENTS` contains `no-confirm`.
+Ask with `AskUserQuestion`: **Create** / **Revise** / **Cancel**, with the title and full body as the `preview` of **Create** (listed first). The preview is the only place the draft is guaranteed to be seen — never ask without it. On *Revise*, apply the feedback and ask again with the new draft.
 
 On approval, create with `gh pr create --base <base>`, body via HEREDOC. Print the PR URL.
 
