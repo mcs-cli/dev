@@ -12,7 +12,7 @@ Think as deeply as the objective warrants — a one-file change needs far less t
 
 ## 1. Frame
 
-**Call `EnterPlanMode` first**, unless already in plan mode. Nothing here touches project files — the mode is what guarantees it. The single exception is the plan file itself, written in Step 7.
+**Call `EnterPlanMode` first**, unless already in plan mode. Nothing here touches project files — the mode is what guarantees it. The single exception is the plan file itself, written in Step 8.
 
 Then read `$ARGUMENTS`. If its first whitespace-separated token is exactly `quick`, set **quick mode** and drop that token; `quickly refactor the parser` is an objective, not a flag. Restate what remains in one line.
 
@@ -47,7 +47,7 @@ Batch the frontier. One question at a time is the slow path the rounds exist to 
 
 **Concise by construction.** The per-section caps below are the budget; there's no global word count to game. A rename is a three-line plan, a twenty-file refactor is twenty one-line steps. A plan may run long because it has many steps — never because a section grew.
 
-**Readable.** Write for someone deciding in under a minute. Plain sentences, no throat-clearing, no paragraph whose real job is to look thorough. If a line could be cut without changing the decision, cut it.
+**Readable.** Write for someone deciding in a few minutes. Plain sentences, no throat-clearing, no paragraph whose real job is to look thorough. If a line could be cut without changing the decision, cut it.
 
 **Shape:**
 
@@ -73,8 +73,24 @@ Constraints:
 
 Emit it even when the project or user instructions already say the same — where they do, those govern in full. Often they won't. These travel *with* the plan so they're re-read at implementation time: honor them while building, not just while writing.
 
-## 7. Present
+## 7. Check the facts
+
+Before presenting, re-verify every factual claim in the plan against the code, not against your memory of it: each file path exists, each named symbol exists where the step says it does, and each stated behavior is what the code actually does.
+
+- A claim that doesn't hold gets fixed or dropped. Don't present a step you couldn't verify.
+- If a wrong fact undercuts a decision the user made in Step 4, don't quietly re-decide it — put the correction to them with `AskUserQuestion` before presenting.
+- Settled decisions are not facts to re-check. This pass verifies the plan, it doesn't reopen it.
+
+## 8. Present
 
 Write the plan where the harness expects it — plan mode names a plan file; write there — then call `ExitPlanMode`. It takes no arguments and no plan content: it reads what you wrote and signals that you're ready for approval. Don't edit anything else before it's approved.
 
 If Step 3 ended the objective and the user chose not to proceed, there is no plan. Skip `ExitPlanMode` and report what you found.
+
+## 9. Execute
+
+Once the plan is approved, start implementing it without waiting to be asked. Follow the steps in order and honor the `Constraints:` block as you write code.
+
+If the steps are grouped into phases, stop at the end of each phase, report what's done, and wait for the user before starting the next — that checkpoint is why the phase exists.
+
+If there is no plan (Step 8's no-plan branch), there is nothing to execute.

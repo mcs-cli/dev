@@ -116,7 +116,7 @@ components:
   # ── Configuration ───────────────────────────────────────────────────────
   - id: settings
     displayName: Settings
-    description: Plan mode, always-thinking, env vars, hooks config, plugins
+    description: Always-thinking, env vars, hooks config, plugins
     settingsFile: config/settings.json
 
   - id: gitignore

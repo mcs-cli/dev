@@ -2,7 +2,7 @@
 
 # Dev Essentials
 
-### Every session starts in plan mode and ends in a reviewable pull request.
+### Every change starts with a plan and ends in a reviewable pull request.
 
 [![MCS tech pack](https://img.shields.io/badge/MCS-tech%20pack-6f42c1)](https://github.com/mcs-cli/mcs)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-compatible-d97757)](https://docs.anthropic.com/en/docs/claude-code)
@@ -37,7 +37,7 @@ Global installation is recommended. The pack's only question is a personal branc
 
 1. **Sync** — settings, plugins, commands, and the git and code-style sections of `CLAUDE.local.md` are installed. Nothing runs during a session that wasn't put there at sync time.
 2. **Session start** — a hook reports the repository and branch, a warning if the branch is protected, uncommitted and stashed counts, merge conflicts, how far ahead or behind the remote you are (or that no upstream is set), and any open pull request.
-3. **Planning** — plan mode is the default, so Claude proposes before it edits. `/make-plan` researches the code first, then interviews you about the open decisions — as selectable options where the choices are discrete, as prose where they aren't. The plan it writes is short enough to read in one pass and carries its comment and documentation rules with it, so they still apply once you approve it. `/grill-me` stays available for stress-testing anything that isn't a code plan.
+3. **Planning** — `/make-plan` switches to plan mode so Claude proposes before it edits, researches the code first, then interviews you about the open decisions — as selectable options where the choices are discrete, as prose where they aren't. The plan it writes is short enough to read in one pass and carries its comment and documentation rules with it, so they still apply once you approve it. `/grill-me` stays available for stress-testing anything that isn't a code plan.
 4. **Shipping** — `/commit` stages named files and writes a message from what is staged, nothing else. `/pr` adds the push and the pull request, targeting the repository's default branch unless you name another, and shows you the title and body before anything is created.
 5. **Reviewing** — `/review-pr` runs specialized agents over the diff for code quality, tests, error handling, comments, and types. Read-only: it reports findings and changes nothing.
 
@@ -53,7 +53,6 @@ The pack also contributes these settings:
 
 | Setting | Value | Purpose |
 |---|---|---|
-| `defaultMode` | `plan` | Claude proposes an approach before making changes |
 | `alwaysThinkingEnabled` | `true` | Extended thinking on every response |
 | `useAutoModeDuringPlan` | `true` | Prefers shell commands over dedicated file tools while planning |
 | `ENABLE_TOOL_SEARCH` | `1` | Enables deferred tool search for MCP servers |
@@ -75,7 +74,7 @@ The pack also contributes these settings:
 | **grilling** + **grill-me** (skills) | Interviews you with tough questions to pressure-test a plan before you build it. `/make-plan` drives **grilling**; `/grill-me` is the standalone entry point |
 | **git.md** (template) | Branch naming, read-only review rules, and commit message format in `CLAUDE.local.md` |
 | **code-style.md** (template) | Comment and doc-comment rules in `CLAUDE.local.md` — why not what, public declarations only |
-| **config/settings.json** (settings) | Plan mode by default, always-on extended thinking, deferred tool search, and no Claude attribution in commits or PRs |
+| **config/settings.json** (settings) | Always-on extended thinking, deferred tool search, and no Claude attribution in commits or PRs |
 | `*.local.*` (gitignore) | Keeps `CLAUDE.local.md` and other local files out of version control |
 
 `mcs doctor` additionally checks that Homebrew is installed and that the `SessionStart` hook is registered.
@@ -88,7 +87,7 @@ The pack also contributes these settings:
 dev/
 ├── techpack.yaml                  # Manifest — defines all components
 ├── config/
-│   └── settings.json              # Claude Code settings (plan mode, env vars)
+│   └── settings.json              # Claude Code settings (thinking, env vars)
 ├── hooks/
 │   └── session_start.sh           # Git status + branch protection
 ├── commands/
