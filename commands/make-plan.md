@@ -12,7 +12,7 @@ Think as deeply as the objective warrants — a one-file change needs far less t
 
 ## 1. Frame
 
-**Call `EnterPlanMode` first**, unless already in plan mode. Nothing here touches project files — the mode is what guarantees it. The single exception is the plan file itself, written in Step 8.
+**Call `EnterPlanMode` first**, unless already in plan mode. Nothing here touches project files — the mode is what guarantees it. The single exception is the plan file itself, written in Step 5.
 
 Then read `$ARGUMENTS`. If its first whitespace-separated token is exactly `quick`, set **quick mode** and drop that token; `quickly refactor the parser` is an objective, not a flag. Restate what remains in one line.
 
@@ -41,9 +41,11 @@ Otherwise call the Skill tool with `grilling` and follow it — the design tree,
 
 Batch the frontier. One question at a time is the slow path the rounds exist to avoid. A decision the earlier conversation already settled is not on the frontier — don't re-ask it.
 
-`AskUserQuestion` is normally reserved for what you can't settle from sensible defaults. That bar doesn't apply here — the user ran this command to be asked. A decision you *could* default is still theirs to make.
+`AskUserQuestion`'s usual bar — only what you can't settle from sensible defaults — doesn't apply here: the user ran this command to be asked, so a decision you *could* default is still theirs.
 
 ## 5. Write the plan
+
+Write it where the harness expects it — plan mode names a plan file; write there. It stays a draft until Step 7 passes.
 
 **Concise by construction.** The per-section caps below are the budget; there's no global word count to game. A rename is a three-line plan, a twenty-file refactor is twenty one-line steps. A plan may run long because it has many steps — never because a section grew.
 
@@ -56,7 +58,7 @@ Batch the frontier. One question at a time is the slow path the rounds exist to 
 - **Verify** — how the user confirms it worked. Bullets, at most four, each a check plus its expected result. One line saying so if there's nothing to check manually.
 - **Risks** — only when a step can fail in a way the user would want to hear about first. Omit the heading otherwise.
 
-**No research narration.** What you learned while researching is not part of the plan. Where a `Context` heading is required — some plan-mode harnesses mandate one — the two-sentence Why goes under it and nothing else. Never let it grow into a summary of what you read; that belongs in the conversation or a memory file. This is the single biggest source of plan bloat.
+**No research narration.** What you learned while researching belongs in the conversation or a memory file, not the plan. Where a `Context` heading is required — some plan-mode harnesses mandate one — the two-sentence Why goes under it and nothing else. This is the single biggest source of plan bloat.
 
 Cut every sentence arguing *for* a decision already settled. The decision itself belongs in Step 6 as one line; the case for it belongs nowhere. A plan is what you'll do, not the argument that you should.
 
@@ -75,17 +77,26 @@ Emit it even when the project or user instructions already say the same — wher
 
 ## 7. Check the facts
 
-Before presenting, re-verify every factual claim in the plan against the code, not against your memory of it: each file path exists, each named symbol exists where the step says it does, and each stated behavior is what the code actually does.
+List every factual claim in the draft: file paths, line numbers, symbol names and locations, counts, and statements about current behavior. Verify each one with a tool call made **after** the draft was written. Reads from Step 3 don't count, and counts must come from an actual count.
 
-- A claim that doesn't hold gets fixed or dropped. Don't present a step you couldn't verify.
-- If a wrong fact undercuts a decision the user made in Step 4, don't quietly re-decide it — put the correction to them with `AskUserQuestion` before presenting.
+Print the table in chat:
+
+| Claim | Checked with | Result |
+|---|---|---|
+| … | `Grep …` / `Read …:L` | ✅ / ❌ fixed to … / ⚠️ dropped |
+
+- ❌ → fix the plan, or drop the step if the fix isn't possible.
+- If a ❌ undercuts a decision the user made, ask them with `AskUserQuestion` before presenting.
 - Settled decisions are not facts to re-check. This pass verifies the plan, it doesn't reopen it.
+- **Any edit to the plan file, including after a rejection, needs fresh rows for the claims it added or changed.**
 
 ## 8. Present
 
-Write the plan where the harness expects it — plan mode names a plan file; write there — then call `ExitPlanMode`. It takes no arguments and no plan content: it reads what you wrote and signals that you're ready for approval. Don't edit anything else before it's approved.
-
 If Step 3 ended the objective and the user chose not to proceed, there is no plan. Skip `ExitPlanMode` and report what you found.
+
+Precondition: every claim in the plan file has a Step 7 row for its current wording. A claim without one → go back to Step 7.
+
+Call `ExitPlanMode`. It takes no arguments and reads the plan file. Edit nothing else until it's approved.
 
 ## 9. Execute
 
