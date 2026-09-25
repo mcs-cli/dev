@@ -72,6 +72,7 @@ The pack also contributes these settings:
 | **/pr** (command) | Commit, push, and open a pull request against the default branch — shown for approval before it is created |
 | **/review-pr** (command) | Read-only review across code quality, tests, error handling, comments, types, and simplification |
 | **grilling** + **grill-me** (skills) | Interviews you with tough questions to pressure-test a plan before you build it. `/make-plan` drives **grilling**; `/grill-me` is the standalone entry point |
+| **test-audit** (skill) | Gates every new test on the behavior it protects, and audits existing tests that restate source, duplicate stronger coverage, or keep test-only seams alive. Adapted from [OpenClaw](#credits) |
 | **git.md** (template) | Branch naming, read-only review rules, and commit message format in `CLAUDE.local.md` |
 | **code-style.md** (template) | Comment and doc-comment rules in `CLAUDE.local.md` — why not what, public declarations only |
 | **config/settings.json** (settings) | Always-on extended thinking, deferred tool search, and no Claude attribution in commits or PRs |
@@ -79,7 +80,7 @@ The pack also contributes these settings:
 
 `mcs doctor` additionally checks that Homebrew is installed and that the `SessionStart` hook is registered.
 
-> The skills are installed from the [`skills`](https://github.com/mattpocock/skills) registry via `npx` during `mcs sync`, which is why Node.js is a dependency.
+> The grilling skills are installed from the [`skills`](https://github.com/mattpocock/skills) registry via `npx` during `mcs sync`, which is why Node.js is a dependency.
 
 ## Directory structure
 
@@ -95,6 +96,8 @@ dev/
 │   ├── commit.md                  # /commit slash command
 │   ├── pr.md                      # /pr slash command
 │   └── review-pr.md               # /review-pr slash command
+├── skills/
+│   └── test-audit/                # Test authoring gate + audit workflow
 └── templates/
     ├── git.md                     # Branch naming + commit conventions
     └── code-style.md              # Comment + doc-comment rules
@@ -112,6 +115,10 @@ dev/
 - [MCS](https://github.com/mcs-cli/mcs) — the configuration engine
 - [Creating Tech Packs](https://github.com/mcs-cli/mcs/blob/main/docs/creating-tech-packs.md)
 - [Tech Pack Schema](https://github.com/mcs-cli/mcs/blob/main/docs/techpack-schema.md)
+
+## Credits
+
+The **test-audit** skill is adapted from the [`test-audit`](https://github.com/openclaw/openclaw/tree/main/.agents/skills/test-audit) skill in [OpenClaw](https://github.com/openclaw/openclaw), copyright (c) 2026 OpenClaw Foundation, used under the [MIT License](https://github.com/openclaw/openclaw/blob/main/LICENSE). This version removes the OpenClaw-specific tooling and conventions so it works in any language or framework.
 
 ## License
 
