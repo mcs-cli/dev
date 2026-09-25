@@ -113,6 +113,13 @@ components:
     type: skill
     shell: "npx -y skills add mattpocock/skills --skill grilling --skill grill-me -g -a claude-code -y"
 
+  - id: skill-test-audit
+    displayName: test-audit skill
+    description: Gates new tests and audits low-value or implementation-coupled ones
+    skill:
+      source: skills/test-audit
+      destination: test-audit
+
   # ── Configuration ───────────────────────────────────────────────────────
   - id: settings
     displayName: Settings
