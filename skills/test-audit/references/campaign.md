@@ -1,10 +1,11 @@
 # Test-pruning campaign
 
 Campaign mode prunes one subsystem's whole test surface in one change set: a
-module, package, feature, plugin, or service. The value bar, retention bar,
-candidate evidence, and validation in [SKILL.md](SKILL.md) apply to every
-lane. This file adds the order of work. Each step ends on its completion
-criterion; do not start the next step early.
+module, package, feature, plugin, or service. The retention bar and candidate
+evidence in [retention-and-evidence.md](retention-and-evidence.md) and the
+junk patterns and validation in [SKILL.md](../SKILL.md) apply to every lane.
+This file adds the order of work. Each step ends on its completion criterion;
+do not start the next step early.
 
 ## 1. Baseline
 
@@ -109,7 +110,7 @@ Expect review tooling to see a truncated file list on a diff this large.
 Record maintainer decisions about compatibility flags in the PR evidence
 rather than editing gates.
 
-Hand off with the [SKILL.md](SKILL.md) report, plus:
+Hand off with the [SKILL.md](../SKILL.md) report, plus:
 
 - baseline and final test/support line counts, with production counted separately;
 - lanes, retired layers, and keepers;
