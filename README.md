@@ -78,7 +78,7 @@ The pack also contributes these settings:
 | **config/settings.json** (settings) | Always-on extended thinking, deferred tool search, and no Claude attribution in commits or PRs |
 | `*.local.*` (gitignore) | Keeps `CLAUDE.local.md` and other local files out of version control |
 
-`mcs doctor` additionally checks that Homebrew is installed and that the `SessionStart` hook is registered.
+`mcs doctor` additionally checks that the `SessionStart` hook is registered.
 
 > The grilling skills are installed from the [`skills`](https://github.com/mattpocock/skills) registry via `npx` during `mcs sync`, which is why Node.js is a dependency.
 
