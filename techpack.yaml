@@ -33,18 +33,15 @@ components:
   - id: node
     displayName: Node.js
     description: JavaScript runtime (for npx-based MCP servers)
-    dependencies: [homebrew]
     brew: node
 
   - id: gh
     displayName: GitHub CLI
     description: GitHub CLI for PR operations
-    dependencies: [homebrew]
     brew: gh
 
   - id: jq
     description: JSON processor (used by session hooks)
-    dependencies: [homebrew]
     brew: jq
 
   # ── Plugins ─────────────────────────────────────────────────────────────
@@ -67,7 +64,6 @@ components:
   - id: hook-session-start
     displayName: Session start hook
     description: Shows git status, branch protection, and open PRs on session start
-    dependencies: [jq]
     hookEvent: SessionStart
     hook:
       source: hooks/session_start.sh
@@ -77,7 +73,6 @@ components:
   - id: command-make-plan
     displayName: /make-plan command
     description: Researches, grills the open decisions, and writes a short plan
-    dependencies: [skill-grilling]
     command:
       source: commands/make-plan.md
       destination: make-plan.md
@@ -92,7 +87,6 @@ components:
   - id: command-pr
     displayName: /pr command
     description: Automates stage, commit, push, and PR creation with ticket extraction
-    dependencies: [gh]
     command:
       source: commands/pr.md
       destination: pr.md
@@ -100,7 +94,6 @@ components:
   - id: command-review-pr
     displayName: /review-pr command
     description: Comprehensive PR review with context-aware specialized agents
-    dependencies: [gh, plugin-pr-review-toolkit]
     command:
       source: commands/review-pr.md
       destination: review-pr.md
@@ -109,7 +102,6 @@ components:
   - id: skill-grilling
     displayName: Grilling skills
     description: Stress-test a plan before building it
-    dependencies: [node]
     type: skill
     shell: "npx -y skills add mattpocock/skills --skill grilling --skill grill-me -g -a claude-code -y"
 
