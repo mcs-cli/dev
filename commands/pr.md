@@ -74,4 +74,4 @@ On approval, create with `gh pr create --base <base>`, body via HEREDOC. Print t
 
 ## 7. Evaluate learnings
 
-If the session produced reusable knowledge, route it through the available memory/knowledge tools.
+After printing the URL, decide whether the session produced reusable knowledge or left a memory wrong, outdated, or incomplete; if so, route it through the available memory/knowledge tools.
