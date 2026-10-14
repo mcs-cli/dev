@@ -68,7 +68,7 @@ No template → `## Why` + `## Test plan`, and nothing else unless the change ca
 
 ## 6. Review and create
 
-Ask with `AskUserQuestion`: **Create** / **Revise** / **Cancel**, with the title and full body as the `preview` of **Create** (listed first). The preview is the only place the draft is guaranteed to be seen — never ask without it. On *Revise*, apply the feedback and ask again with the new draft.
+End the turn with the draft in your visible reply — never only in your reasoning: the title on its own line, the full body in a fenced `markdown` block, then one line asking the user to reply **create**, **revise** (with changes), or **cancel**. Do not call `AskUserQuestion` or any other tool after the draft; a card hides the text sent with it, and a tool call makes it easy to skip the text entirely. On *revise*, apply the feedback and end the next turn the same way.
 
 On approval, create with `gh pr create --base <base>`, body via HEREDOC. Print the PR URL.
 
