@@ -4,8 +4,5 @@
   },
   "alwaysThinkingEnabled": true,
   "useAutoModeDuringPlan": true,
-  "attribution": {
-    "commit": "",
-    "pr": ""
-  }
+  "attribution": false
 }

@@ -56,8 +56,7 @@ The pack also contributes these settings:
 | `alwaysThinkingEnabled` | `true` | Extended thinking on every response |
 | `useAutoModeDuringPlan` | `true` | Prefers shell commands over dedicated file tools while planning |
 | `ENABLE_TOOL_SEARCH` | `1` | Enables deferred tool search for MCP servers |
-| `attribution.commit` | `""` | No Claude Code attribution in commit messages |
-| `attribution.pr` | `""` | No Claude Code attribution in pull request descriptions |
+| `attribution` | `false` | No Claude Code attribution in commits or pull requests (requires Claude Code 2.1.281 or later) |
 
 ## What's included
 
