@@ -37,7 +37,7 @@ Global installation is recommended. The pack's only question is a personal branc
 
 1. **Sync** — settings, plugins, commands, and the git and code-style sections of `CLAUDE.local.md` are installed. Nothing runs during a session that wasn't put there at sync time.
 2. **Session start** — a hook reports the repository and branch, a warning if the branch is protected, uncommitted and stashed counts, merge conflicts, how far ahead or behind the remote you are (or that no upstream is set), and any open pull request.
-3. **Planning** — `/make-plan` switches to plan mode so Claude proposes before it edits, researches the code first, then interviews you about the open decisions — as selectable options where the choices are discrete, as prose where they aren't. The plan it writes is short enough to read in one pass and carries its comment and documentation rules with it, so they still apply once you approve it. `/grill-me` stays available for stress-testing anything that isn't a code plan.
+3. **Planning** — `/make-plan` switches to plan mode so Claude proposes before it edits, researches the code first, then interviews you about the open decisions — as selectable options where the choices are discrete, as prose where they aren't. The plan it writes is short enough to read in one pass, fact-checked before you see it, and self-contained: a new session with none of the conversation can execute it, because the plan carries its own branch, checkpoint, verification, and comment rules. `/grill-me` stays available for stress-testing anything that isn't a code plan.
 4. **Shipping** — `/commit` stages named files and writes a message from what is staged, nothing else. `/pr` adds the push and the pull request, targeting the repository's default branch unless you name another, and shows you the title and body before anything is created.
 5. **Reviewing** — `/review-pr` runs specialized agents over the diff for code quality, tests, error handling, comments, and types. Read-only: it reports findings and changes nothing.
 
@@ -66,7 +66,7 @@ The pack also contributes these settings:
 | **claude-hud** (plugin) | Shows context usage, active tools, running agents, and todo progress |
 | **pr-review-toolkit** (plugin) | The specialized review agents behind `/review-pr` |
 | **session_start.sh** (hook) | Reports repository and branch, protection warning, uncommitted and stashed counts, conflicts, ahead/behind or missing upstream, and any open PR |
-| **/make-plan** (command) | Researches the code, interviews you about the open decisions, and writes a short plan that carries its comment and documentation rules into implementation |
+| **/make-plan** (command) | Researches the code, interviews you about the open decisions, and writes a short, fact-checked plan that a new session can execute on its own |
 | **/commit** (command) | Stages named files, writes a message describing only what is staged, pushes |
 | **/pr** (command) | Commit, push, and open a pull request against the default branch — shown for approval before it is created |
 | **/review-pr** (command) | Read-only review across code quality, tests, error handling, comments, types, and simplification |
