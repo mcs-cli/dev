@@ -26,6 +26,8 @@ Search available memory/knowledge tools using keywords from the objective and th
 
 Read the actual code before proposing anything. Trace the real flow end to end, through every file the change touches.
 
+**Removals, renames and moves:** list every reference to what changes, tests, fixtures and assets included, and read each one; a grep hit is a lead, not a decision. Give each an action: delete, trim, rewrite or keep. Then do the same for anything whose only user is being removed, until nothing new turns up.
+
 **Facts are your job, decisions are the user's.** Never ask what you can look up. Dispatch sub-agents for broad searches; ask the user only what the codebase can't answer.
 
 If the code contradicts the objective's premise, stop before Step 4 — don't plan around it. Put the finding to the user with `AskUserQuestion`: what you found, and the real options, including doing nothing. Continue only on their answer. A well-built plan for the wrong problem is the expensive failure here.
@@ -59,6 +61,7 @@ Write it where the harness expects it — plan mode names a plan file; write the
 
 - Locate code by file and symbol (function, type, key, heading), never by line number. Line numbers go stale with the first edit.
 - Each step says what changes concretely enough to do without guessing: the new value, the renamed symbol, the behavior added or removed.
+- No phrase that hands a decision to the executor, such as "any other", "if nothing else" or "as needed". Each one marks a place you didn't look: look, or ask the user.
 - No pointers into the conversation: no "as discussed", "option B", "the approach above", "the issue we found". Say the thing itself.
 - Any term the code doesn't define gets defined in the plan, in one clause.
 
@@ -107,9 +110,11 @@ Print the table in chat:
 - Settled decisions are not facts to re-check. This pass verifies the plan, it doesn't reopen it.
 - **Any edit to the plan file, including after a rejection, needs fresh rows for the claims it added or changed.**
 
+**Coverage.** The rows above confirm what the plan says; they can't see what it leaves out. For every symbol the plan removes or renames, grep the repository and add a row to the same table: the hit count, and the steps that cover those hits. A hit no step covers is ❌: add a step for it, or put it to the user.
+
 **Cold read.** You can't read the plan without this conversation, so hand it to someone who can: dispatch the `plan-reader` agent with only the plan file's path, as `Plan: <path>.` It reports, for each step, whether it could carry the step out from the file and the code alone, and what it would have to guess. Don't pass it the objective, your concerns, or anything else from this conversation; that context is exactly what it must not have. With no `plan-reader` agent available, do the read yourself against Step 5's Self-contained rules and say so above the table.
 
-Fix every step the reader couldn't act on, then give any claim the fix added its own row. A step that rewording can't fix, such as one the code doesn't support, is dropped or put to the user with `AskUserQuestion`. Print every step in chat, not only the ones that changed:
+Fix every step the reader couldn't act on, then give any claim the fix added its own row, including a coverage row for a symbol it newly removes or renames. A step that rewording can't fix, such as one the code doesn't support, is dropped or put to the user with `AskUserQuestion`. Print every step in chat, not only the ones that changed:
 
 | Step | Result |
 |---|---|
@@ -117,9 +122,11 @@ Fix every step the reader couldn't act on, then give any claim the fix added its
 | 2 | ✏️ "<before>" → "<after>" |
 | 3 | ⚠️ dropped / asked the user: <why> |
 
+**Re-check.** Your fixes are written with this conversation in mind, the blind spot the cold read exists for. If they changed what any step does, dispatch `plan-reader` once more, as a new Agent call, never by resuming the earlier one: `Plan: <path>. Report on steps <n>[, <m>…].`, numbering the steps as they are after the fix. Rewording that changes no step's action doesn't count. Whatever it still flags goes to the user with `AskUserQuestion`, not to a third read: re-reading until clean loops. With no `plan-reader` agent available, skip the re-check. The step table shows each step after this re-check.
+
 Both tables are printed after their fixes are in the plan file, so what they show is what Step 8 presents.
 
-**After a rejection**, if the edit made in response to it added or rewrote steps, dispatch `plan-reader` once more with the plan file's path and those steps' numbers as they are after the edit, nothing else: `Plan: <path>. Report on steps <n>[, <m>…].` With no `plan-reader` agent available, do that read yourself. Fix what it flags and don't dispatch `plan-reader` again; the fact rows above still apply. On this path the step table lists only those steps, overriding "print every step". Fixes from the cold read itself, and rewording that changes no step's action, don't trigger this re-dispatch.
+**After a rejection**, if the edit made in response to it added or rewrote steps, dispatch `plan-reader` once more, as a new Agent call, never by resuming the earlier one, which would answer from its memory of the old draft. Give it the plan file's path and those steps' numbers as they are after the edit, nothing else: `Plan: <path>. Report on steps <n>[, <m>…].` With no `plan-reader` agent available, do that read yourself. Fix what it flags and don't dispatch `plan-reader` again; the fact rows above still apply. On this path the step table lists only those steps, overriding "print every step". Rewording that changes no step's action doesn't trigger this re-dispatch.
 
 ## 8. Present
 
