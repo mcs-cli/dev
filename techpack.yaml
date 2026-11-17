@@ -39,11 +39,6 @@ components:
     description: Audit and improve CLAUDE.md files across repositories
     plugin: "claude-md-management@claude-plugins-official"
 
-  - id: plugin-claude-hud
-    displayName: claude-hud
-    description: Context usage, active tools, running agents, and todo progress
-    plugin: claude-hud@jarrodwatts/claude-hud
-
   - id: plugin-pr-review-toolkit
     displayName: pr-review-toolkit
     description: Specialized review agents for comprehensive PR analysis

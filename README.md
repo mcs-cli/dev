@@ -63,7 +63,6 @@ The pack also contributes these settings:
 | Component | What it does |
 |---|---|
 | **claude-md-management** (plugin) | Audits and improves `CLAUDE.md` files across repositories |
-| **claude-hud** (plugin) | Shows context usage, active tools, running agents, and todo progress |
 | **pr-review-toolkit** (plugin) | The specialized review agents behind `/review-pr` |
 | **session_start.sh** (hook) | Reports repository and branch, protection warning, uncommitted and stashed counts, conflicts, ahead/behind or missing upstream, and any open PR |
 | **/make-plan** (command) | Researches the code, interviews you about the open decisions, and writes a short, fact-checked plan that a new session can execute on its own |
