@@ -35,9 +35,9 @@ Global installation is recommended. The pack's only question is a personal branc
 
 **Nothing here guesses.** Every command reads the actual diff, the actual branch, and the actual template.
 
-1. **Sync** — settings, plugins, commands, and the git and code-style sections of `CLAUDE.local.md` are installed. Nothing runs during a session that wasn't put there at sync time.
+1. **Sync** — settings, plugins, commands, skills, agents, and the git and code-style sections of `CLAUDE.local.md` are installed. Nothing runs during a session that wasn't put there at sync time.
 2. **Session start** — a hook reports the repository and branch, a warning if the branch is protected, uncommitted and stashed counts, merge conflicts, how far ahead or behind the remote you are (or that no upstream is set), and any open pull request.
-3. **Planning** — `/make-plan` switches to plan mode so Claude proposes before it edits, researches the code first, then interviews you about the open decisions — as selectable options where the choices are discrete, as prose where they aren't. The plan it writes is short enough to read in one pass, fact-checked before you see it, and self-contained: a new session with none of the conversation can execute it, because the plan carries its own branch, checkpoint, verification, and comment rules. `/grill-me` stays available for stress-testing anything that isn't a code plan.
+3. **Planning** — `/make-plan` switches to plan mode so Claude proposes before it edits, researches the code first, then interviews you about the open decisions — as selectable options where the choices are discrete, as prose where they aren't. The plan it writes is short enough to read in one pass, fact-checked before you see it, and self-contained: a new session with none of the conversation can execute it, because the plan carries its own branch, checkpoint, verification, and comment rules. Before you see it, a read-only agent given only the plan file flags any step it couldn't carry out alone, and that step is fixed. `/grill-me` stays available for stress-testing anything that isn't a code plan.
 4. **Shipping** — `/commit` stages named files and writes a message from what is staged, nothing else. `/pr` adds the push and the pull request, targeting the repository's default branch unless you name another, and shows you the title and body before anything is created.
 5. **Reviewing** — `/review-pr` runs specialized agents over the diff for code quality, tests, error handling, comments, and types. Read-only: it reports findings and changes nothing.
 
@@ -69,6 +69,7 @@ The pack also contributes these settings:
 | **/commit** (command) | Stages named files, writes a message describing only what is staged, pushes |
 | **/pr** (command) | Commit, push, and open a pull request against the default branch — shown for approval before it is created |
 | **/review-pr** (command) | Read-only review across code quality, tests, error handling, comments, types, and simplification |
+| **plan-reader** (agent) | Read-only agent /make-plan uses to check that a plan can be executed from the file alone |
 | **grilling** + **grill-me** (skills) | Interviews you with tough questions to pressure-test a plan before you build it. `/make-plan` drives **grilling**; `/grill-me` is the standalone entry point |
 | **test-audit** (skill) | Gates every new test on the behavior it protects, and audits existing tests that restate source, duplicate stronger coverage, or keep test-only seams alive. Adapted from [OpenClaw](https://github.com/openclaw/openclaw); see [`skills/test-audit/LICENSE`](skills/test-audit/LICENSE) |
 | **git.md** (template) | Branch naming, read-only review rules, and commit message format in `CLAUDE.local.md` |
@@ -87,6 +88,8 @@ dev/
 ├── techpack.yaml                  # Manifest — defines all components
 ├── config/
 │   └── settings.json              # Claude Code settings (thinking, env vars)
+├── agents/
+│   └── plan-reader.md             # Read-only cold read for /make-plan
 ├── hooks/
 │   └── session_start.sh           # Git status + branch protection
 ├── commands/
