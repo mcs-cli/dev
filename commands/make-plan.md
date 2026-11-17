@@ -107,16 +107,19 @@ Print the table in chat:
 - Settled decisions are not facts to re-check. This pass verifies the plan, it doesn't reopen it.
 - **Any edit to the plan file, including after a rejection, needs fresh rows for the claims it added or changed.**
 
-**Cold read.** You can't read the plan without this conversation, so hand it to someone who can: dispatch a read-only sub-agent and give it only the plan file's path. Ask it, for each step, whether it could carry the step out from the file and the code alone, and what it would have to guess. Don't pass it the objective, your concerns, or anything else from this conversation; that context is exactly what it must not have. With no sub-agent available, do the read yourself against Step 5's Self-contained rules and say so above the table.
+**Cold read.** You can't read the plan without this conversation, so hand it to someone who can: dispatch the `plan-reader` agent with only the plan file's path, as `Plan: <path>.` It reports, for each step, whether it could carry the step out from the file and the code alone, and what it would have to guess. Don't pass it the objective, your concerns, or anything else from this conversation; that context is exactly what it must not have. With no `plan-reader` agent available, do the read yourself against Step 5's Self-contained rules and say so above the table.
 
-Fix every step the reader couldn't act on, then give any claim the fix added its own row. Print every step in chat, not only the ones that changed:
+Fix every step the reader couldn't act on, then give any claim the fix added its own row. A step that rewording can't fix, such as one the code doesn't support, is dropped or put to the user with `AskUserQuestion`. Print every step in chat, not only the ones that changed:
 
 | Step | Result |
 |---|---|
 | 1 | ✅ stands alone |
 | 2 | ✏️ "<before>" → "<after>" |
+| 3 | ⚠️ dropped / asked the user: <why> |
 
 Both tables are printed after their fixes are in the plan file, so what they show is what Step 8 presents.
+
+**After a rejection**, if the edit made in response to it added or rewrote steps, dispatch `plan-reader` once more with the plan file's path and those steps' numbers as they are after the edit, nothing else: `Plan: <path>. Report on steps <n>[, <m>…].` With no `plan-reader` agent available, do that read yourself. Fix what it flags and don't dispatch `plan-reader` again; the fact rows above still apply. On this path the step table lists only those steps, overriding "print every step". Fixes from the cold read itself, and rewording that changes no step's action, don't trigger this re-dispatch.
 
 ## 8. Present
 

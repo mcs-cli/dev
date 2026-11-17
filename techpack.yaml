@@ -96,6 +96,14 @@ components:
       source: skills/test-audit
       destination: test-audit
 
+  # ── Agents ──────────────────────────────────────────────────────────────
+  - id: agent-plan-reader
+    displayName: plan-reader agent
+    description: Read-only agent /make-plan uses to check a plan stands on its own
+    agent:
+      source: agents/plan-reader.md
+      destination: plan-reader.md
+
   # ── Configuration ───────────────────────────────────────────────────────
   - id: settings
     displayName: Settings

@@ -49,7 +49,7 @@ Use keywords extracted from the diff content, changed file names, and module nam
 - Past review findings or known issues in the affected areas
 - Coding standards specific to the file types being changed
 
-Use whatever knowledge and memory tools are available in this project. Include relevant findings in each agent's context preamble.
+Use whatever knowledge and memory tools are available in this project. Step 6 puts these findings at the top of every agent's prompt.
 
 ### 5. Determine Review Scope
 
@@ -76,6 +76,8 @@ Run **all selected agents in parallel** by default (launch simultaneously). If `
 
 For EACH agent, include this context preamble in the task prompt:
 
+> **Project knowledge:** {Step 4 findings, or "none relevant"}
+>
 > **PR Context:**
 > - Title: {PR title}
 > - Description: {PR description summary}
